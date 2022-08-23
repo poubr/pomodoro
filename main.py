@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from math import floor
 import simpleaudio as sa
 
@@ -160,20 +161,29 @@ class Pomodoro:
 
     # resetting the timer and UI
     def reset_timer(self):
-        self.count = 0
-        self.reps = 0
-        self.root.after_cancel(self.timer)
-        self.isPaused = False
-        self.start_button.config(image=self.play_img, command=self.start_timer)
-        self.pause_button.config(image=self.unpause_img, command=self.pause_timer)
-        self.phase_label.config(text="FOCUS")
-        self.canvas.itemconfig(self.bg_image, image=self.one_sprout)
-        self.counter_label.config(text="00:00")
-        self.phase_1.config(image=self.grey_tomato)
-        self.phase_2.config(image=self.grey_tomato)
-        self.phase_3.config(image=self.grey_tomato)
-        self.phase_4.config(image=self.grey_tomato)
-        self.phase_5.config(image=self.grey_tomato)
+
+        self.pause_timer()
+        should_reset = messagebox.askokcancel(title="Reset timer?",
+                                              message="Are you sure you want to reset? All your progress will be lost.")
+
+        if should_reset:
+            self.count = 0
+            self.reps = 0
+            self.root.after_cancel(self.timer)
+            self.isPaused = False
+            self.start_button.config(image=self.play_img, command=self.start_timer)
+            self.pause_button.config(image=self.unpause_img, command=self.pause_timer)
+            self.phase_label.config(text="FOCUS")
+            self.canvas.itemconfig(self.bg_image, image=self.one_sprout)
+            self.counter_label.config(text="00:00")
+            self.phase_1.config(image=self.grey_tomato)
+            self.phase_2.config(image=self.grey_tomato)
+            self.phase_3.config(image=self.grey_tomato)
+            self.phase_4.config(image=self.grey_tomato)
+            self.phase_5.config(image=self.grey_tomato)
+
+        else:
+            self.unpause_timer()
 
     def main(self):
         self.root.mainloop()
